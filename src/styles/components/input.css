@@ -1,0 +1,15 @@
+.input__component {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.input__component input {
+  all: unset;
+  background: whitesmoke;
+  padding: 3px 8px;
+  border-radius: 3px;
+  position: relative;
+}
+.input__component input:invalid {
+  outline: rgb(255, 63, 63) 2px solid !important;
+}/*# sourceMappingURL=input.css.map */

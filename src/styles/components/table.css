@@ -1,0 +1,115 @@
+.table {
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.table__header {
+  height: 8%;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  padding-left: 28px;
+}
+.table__header h1 {
+  padding: 10px 0;
+}
+.table__header h1::first-letter {
+  text-transform: capitalize;
+  color: #ec6a00;
+}
+
+.table__body {
+  width: calc(100% - 60px);
+  margin: 30px;
+  max-height: calc(91% - 45px);
+  background-color: rgba(245, 245, 245, 0.74);
+  border-collapse: collapse;
+  border-radius: 15px;
+  overflow: auto;
+}
+.table__body::-webkit-scrollbar {
+  width: 10px; /* Largeur de la scrollbar */
+  height: 10px;
+}
+.table__body::-webkit-scrollbar-track {
+  background: transparent;
+  width: 8px;
+}
+.table__body::-webkit-scrollbar-thumb {
+  background-color: rgba(18, 18, 18, 0.7803921569);
+  border-radius: 15px;
+}
+.table__body .nowrap {
+  text-wrap: nowrap;
+}
+.table__body table {
+  width: 100%;
+  border-collapse: collapse !important;
+  font-size: 22px;
+  border-style: none;
+}
+.table__body .state {
+  padding: 20px 10px;
+}
+.table__body .state p {
+  padding: 10px 15px;
+  width: 100%;
+  font-size: 19px;
+  border-radius: 25px;
+  cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  text-align: center;
+}
+.table__body .state p.green {
+  color: rgb(0, 82, 0);
+  background-color: rgb(201, 255, 121);
+}
+.table__body .state p.blue {
+  color: rgb(0, 26, 82);
+  background-color: rgb(121, 239, 255);
+}
+.table__body .state p.red {
+  color: rgb(82, 0, 0);
+  background-color: rgb(255, 121, 121);
+}
+.table__body .state p.yellow {
+  color: rgb(81, 82, 0);
+  background-color: rgb(246, 255, 121);
+}
+.table__body th {
+  padding: 10px 20px;
+  text-align: start;
+}
+.table__body th::first-letter {
+  text-transform: capitalize;
+}
+.table__body th.state {
+  text-align: center;
+}
+.table__body td {
+  padding: 20px 20px;
+  max-width: 300px;
+  text-wrap: wrap;
+  word-break: normal;
+}
+.table__body tbody tr {
+  cursor: pointer;
+}
+.table__body tbody tr:nth-child(even) {
+  background-color: rgba(161, 161, 161, 0.7607843137);
+}
+.table__body thead th {
+  background-color: rgb(255, 255, 255);
+  position: sticky;
+  top: 0;
+  left: 0;
+  font-size: 25px;
+  color: #121212;
+}/*# sourceMappingURL=table.css.map */

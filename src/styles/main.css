@@ -1,0 +1,230 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", serif;
+}
+
+.background {
+  position: fixed;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+  background-image: url("../../public/bg.jpg");
+  background-size: cover;
+  filter: sepia(1) grayscale(0.7) brightness(0.3);
+}
+
+.bold {
+  font-weight: 600;
+}
+
+section.content {
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  display: flex;
+  padding: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  height: 100vh;
+  width: 100vw;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.background__dialog {
+  display: none;
+}
+.background__dialog.visible {
+  position: fixed;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65);
+  z-index: 899;
+}
+
+.react-dropdown-select-item:nth-child(even) {
+  background-color: rgb(221, 221, 221);
+}
+
+.modal-quantity {
+  position: fixed;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  padding: 10px 25px;
+  left: 50%;
+  z-index: 1500;
+}
+.modal-quantity input {
+  border: 1px solid black;
+  font-size: 24px;
+  padding: 5px;
+  margin: 8px 0;
+}
+.modal-quantity .modal-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.closingDate {
+  width: 250px !important;
+}
+
+.dialog__notification {
+  position: fixed;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+  display: none;
+  background-color: whitesmoke;
+  min-height: 150px;
+  width: 100vw;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 0 10px 0;
+  align-items: center;
+  border-top: 2px solid rgb(14, 14, 14);
+  border-bottom: 2px solid rgb(14, 14, 14);
+  font-size: 22px;
+  justify-content: center;
+  z-index: 900;
+}
+.dialog__notification .select {
+  margin-top: 10px;
+}
+.dialog__notification.visible {
+  display: flex;
+}
+.dialog__notification .dialog__content {
+  color: rgb(24, 24, 24);
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+  max-height: 60vh;
+  overflow: auto;
+}
+.dialog__notification .dialog__content .material-list {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  flex-direction: column;
+}
+.dialog__notification .dialog__content .input__container {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dialog__notification .dialog__content .input__container input {
+  position: fixed;
+  height: 40px;
+  font-size: 24px;
+  width: 100%;
+  padding: 8px 15px;
+  outline: none;
+  border: 1px solid black;
+}
+.dialog__notification .dialog__content .material-item {
+  font-size: 22px;
+  color: rgb(20, 20, 20);
+  padding: 3px 15px;
+}
+.dialog__notification .dialog__content .material-item:nth-child(even) {
+  background-color: rgb(172, 201, 202);
+}
+.dialog__notification .material__row {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 10px;
+  align-items: center;
+  width: 100%;
+}
+.dialog__notification .material__row p {
+  overflow: hidden;
+  width: 60%;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+}
+.dialog__notification .material__row input {
+  width: 100px;
+  outline: none;
+  border-radius: none;
+  border: 1px solid rgb(32, 32, 32);
+}
+.dialog__notification button {
+  margin-top: 10px;
+  font-size: 18px;
+  border: 2px solid #ec6a00;
+  background-color: rgb(243, 243, 243);
+  font-weight: 600;
+  color: rgb(14, 14, 14);
+  z-index: 2;
+  padding: 3px 25px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+.dialog__notification button:hover {
+  background-color: #ec6a00;
+  color: whitesmoke;
+}
+
+.modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 950;
+}
+
+.display__previsualisation {
+  width: 80vw;
+  font-size: 25px;
+}
+.display__previsualisation .material__list__previsualisation {
+  margin-top: 10px;
+  height: 100%;
+  overflow: scroll;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.modal__buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.confirm,
+.cancel {
+  color: black;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}/*# sourceMappingURL=main.css.map */

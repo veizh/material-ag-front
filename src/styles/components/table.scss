@@ -1,0 +1,143 @@
+.table {
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.table__header {
+    height: 8%;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    padding-left: 28px;
+
+    h1 {
+        padding: 10px 0;
+
+        &::first-letter {
+            text-transform: capitalize;
+            color: #ec6a00;
+        }
+    }
+}
+
+.table__body {
+    width: calc(100% - 60px);
+    margin: 30px;
+    max-height: calc(91% - 45px);
+    background-color: rgba(245, 245, 245, 0.74);
+    border-collapse: collapse;
+    border-radius: 15px;
+
+    overflow: auto;
+    &::-webkit-scrollbar {
+        width: 10px; /* Largeur de la scrollbar */
+        height: 10px;
+      }
+&::-webkit-scrollbar-track {
+    background: transparent;
+    width: 8px;
+}
+
+
+&::-webkit-scrollbar-thumb{
+    background-color: #121212c7;
+    border-radius: 15px;
+}
+    .nowrap {
+        text-wrap: nowrap;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse !important;
+        font-size: 22px;
+        border-style: none;
+        
+    }
+
+    .state {
+        padding: 20px 10px;
+
+        p {
+            padding: 10px 15px;
+            width: 100%;
+            font-size: 19px;
+            border-radius: 25px;
+            cursor: default;
+            user-select: none;
+
+            &.green {
+                color: rgb(0, 82, 0);
+                background-color: rgb(201, 255, 121);
+
+            }
+
+            &.blue {
+                color: rgb(0, 26, 82);
+                background-color: rgb(121, 239, 255);
+
+            }
+
+            &.red {
+                color: rgb(82, 0, 0);
+                background-color: rgb(255, 121, 121);
+
+            }
+
+            &.yellow {
+                color: rgb(81, 82, 0);
+                background-color: rgb(246, 255, 121);
+
+            }
+
+            text-align: center;
+        }
+    }
+
+    th {
+        padding: 10px 20px;
+        text-align: start;
+
+        &::first-letter {
+            text-transform: capitalize;
+        }
+
+        &.state {
+            text-align: center;
+        }
+    }
+
+    td {
+        padding: 20px 20px;
+        max-width: 300px;
+        text-wrap: wrap;
+        word-break: normal;
+
+    }
+
+    tbody {
+        
+        tr {
+            cursor: pointer;
+            &:nth-child(even) {
+                background-color: #a1a1a1c2;
+            }
+        }
+    }
+
+    thead th {
+        background-color: rgb(255, 255, 255);
+        position: sticky;
+        top: 0;
+        left: 0;
+        font-size: 25px;
+        color: #121212;
+
+
+    }
+}

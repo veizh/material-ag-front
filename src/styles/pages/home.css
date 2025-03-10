@@ -1,0 +1,15 @@
+.home__container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 20px;
+  flex-direction: column;
+}
+.home__container button {
+  all: unset;
+  padding: 10px 20px;
+  border: 2px solid whitesmoke;
+  color: whitesmoke;
+}/*# sourceMappingURL=home.css.map */

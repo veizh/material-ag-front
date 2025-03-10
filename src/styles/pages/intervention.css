@@ -1,0 +1,101 @@
+.intervention__container {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(245, 245, 245, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.intervention__container .content {
+  height: calc(100% - 90px);
+}
+.intervention__container .content h1 {
+  width: 100%;
+  background-color: whitesmoke;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  text-transform: uppercase;
+  height: 90px;
+}
+.intervention__container .content .informations {
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 10px;
+  padding-top: 15px;
+}
+.intervention__container .content .materials {
+  height: 100%;
+  overflow: scroll;
+  width: 100%;
+}
+.intervention__container .content .materials::-webkit-scrollbar {
+  width: 10px; /* Largeur de la scrollbar */
+  height: 10px;
+}
+.intervention__container .content .materials::-webkit-scrollbar-track {
+  background: transparent;
+  width: 8px;
+}
+.intervention__container .content .materials::-webkit-scrollbar-thumb {
+  background-color: rgba(18, 18, 18, 0.7803921569);
+  border-radius: 15px;
+}
+.intervention__container .content .materials .row__material {
+  display: flex;
+  width: 100%;
+  padding: 20px 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+.intervention__container .content .materials .row__material:nth-child(2n) {
+  background-color: rgba(245, 245, 245, 0.418);
+}
+.intervention__container .content .materials .row__material .seeparation {
+  height: 1px;
+  width: 100%;
+  margin: 0 30px;
+  background-color: rgb(34, 34, 34);
+}
+.intervention__container .content .materials p {
+  font-size: 22px;
+  font-weight: 500;
+  text-wrap: nowrap;
+}
+.intervention__container .buttons__container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.intervention__container .buttons__container .btn {
+  width: 100%;
+  justify-content: center;
+  height: 90px;
+  gap: 2px;
+  background-color: black;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+.intervention__container .buttons__container .btn:first-child {
+  border-left: none;
+}
+.intervention__container .buttons__container .btn:last-child {
+  border-right: none;
+}
+.intervention__container .buttons__container .btn.end {
+  background-color: rgb(255, 121, 121);
+}
+.intervention__container .buttons__container .btn.transfer {
+  background-color: rgb(121, 239, 255);
+}/*# sourceMappingURL=intervention.css.map */
