@@ -151,7 +151,7 @@ useEffect(()=>{
 },[])
     return(
         <div className="home__container">
-        <button onClick={()=>Navigate("/createIntervention")}>ADD A NEW INTER</button>
+        <button onClick={()=>Navigate("/createIntervention")}>NOUVELLE INTERVENTION</button>
         <main className="table">
             <div className="table__header">
                 <h1>Interventions</h1>
