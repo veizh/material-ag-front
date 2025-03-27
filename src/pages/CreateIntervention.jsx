@@ -20,7 +20,7 @@ useEffect(()=>{
     
 },[selectedMaterials])
     useEffect(() => {
-         fetch("https://stock-ag-back.vercel.app/products/getAll", {
+         fetch(server+"products/getAll", {
     headers: {
       Accept: "*/*",
       "Content-Type": "application/json"

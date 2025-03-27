@@ -5,17 +5,19 @@ import { useNotification } from "../utils/notificationContext.jsx"
 
 import { useNavigate, useParams } from "react-router-dom";
 import ClosingInterventionComponent from "../components/ClosingIntervention.jsx";
+import { server } from "../utils/server.js";
 const InterventionPage = (props)=>{
     const Navigate = useNavigate()
     const [closingModalState,setClosingModalState] = useState(false)
     const [data,setData]=useState()
     const { id } = useParams();
     const { showNotification } = useNotification();
+    
     function toggleClosingModal(){
         setClosingModalState(!closingModalState)
     }
     useEffect(()=>{
-        fetch('http://localhost:3500/interventions/getOne/'+id, {
+        fetch(server +'interventions/getOne/'+id, {
             method: "GET",
             headers: {
                 "Accept": "*/*",
