@@ -58,7 +58,7 @@ const InterventionPage = (props)=>{
 
             <div className="buttons__container">
                 <div onClick={()=>{
-                    showNotification(<ModalConfirm AllCurrentSite={fakeData} allMaterial={data && data.materials} />,"Annulé")
+                    showNotification(<ModalConfirm AllCurrentSite={fakeData} allMaterial={data && data.materials} />,"Annuler")
                 }}className="btn transfer">Transferer du matériel</div>
                 <div onClick={()=>toggleClosingModal()} className="btn end">Cloturer le site</div>
             </div>
