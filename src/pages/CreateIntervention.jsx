@@ -28,7 +28,7 @@ const CreateInterventionPage = () => {
         codePostal.current.value=clientPreset.codePostal
     }
     useEffect(()=>{
-        fetch("http://localhost:3500/clients/getAllClients",{
+        fetch("https://back-material-ag.vercel.app/clients/getAllClients",{
             headers: {
                 Accept: "*/*",
                 "Content-Type": "application/json"
