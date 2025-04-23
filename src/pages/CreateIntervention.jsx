@@ -79,7 +79,7 @@ useEffect(()=>{
             clientData:clientData,
             intervention:data
         }
-        fetch('http://localhost:3500/interventions/create', {
+        fetch('https://back-material-ag.vercel.app/interventions/create', {
             method: "POST",
             headers: {
                 "Accept": "*/*",
