@@ -6,9 +6,29 @@
     height: 100%;
     gap: 20px;
     flex-direction: column;
+    .header{
+        margin: 25px 0;
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+       
+        }
+    
     button{
         all: unset;
-        padding: 10px 20px;
-        border: 2px solid whitesmoke;
-    color: whitesmoke;    }
+        padding: 15px 30px;
+        outline: 1px solid #ffffff;
+    color: #ffffff;    
+    background-color: rgb(36, 36, 36);
+    display: flex;
+    font-weight: 500;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 30px;
+    margin-bottom: 20px;
+    .icon{
+        margin-left: 10px;
+        stroke-width: 2.5px;
+    }
+}
 }

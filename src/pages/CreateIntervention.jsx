@@ -7,20 +7,50 @@ import { useNotification } from "../utils/notificationContext";
 import { useNavigate } from "react-router-dom";
 const CreateInterventionPage = () => {
     const Navigate = useNavigate()
-
-    const { showNotification } = useNotification();
+    const { showNotification,hideNotification } = useNotification();
     let clientName = useRef();
-    let address = useRef();
+    let location = useRef();
+    let groupName = useRef();
+    let codePostal = useRef();
+    let ville = useRef();
     let contractNumber = useRef();
+    let [allClient,setAllClient] = useState()
     let startingDate = useRef();
     const [availableMaterials, setAvailableMaterials] = useState([]);
     const [selectedMaterials, setSelectedMaterials] = useState([]);
+    const [clientPreset, setClientPreset] = useState();
+
+    function remplirClientPreset(){
+        clientName.current.value= clientPreset.clientName
+        groupName.current.value =clientPreset.groupName
+        location.current.value=clientPreset.location
+        ville.current.value=clientPreset.ville
+        codePostal.current.value=clientPreset.codePostal
+    }
+    useEffect(()=>{
+        fetch("http://localhost:3500/clients/getAllClients",{
+            headers: {
+                Accept: "*/*",
+                "Content-Type": "application/json"
+              },
+              method: "GET"
+          }
+             )
+              .then((res) => res.json())
+              .then((res) => {
+                console.log(res);
+                
+                setAllClient(res)
+              });
+        
+    },[])
 useEffect(()=>{
-    console.log(selectedMaterials);
+     clientPreset && remplirClientPreset()
+    console.log("client séléctionné",clientPreset);
     
-},[selectedMaterials])
+},[clientPreset])
     useEffect(() => {
-         fetch(server+"products/getAll", {
+         fetch("https://stock-ag-back.vercel.app/products/getAll", {
     headers: {
       Accept: "*/*",
       "Content-Type": "application/json"
@@ -30,9 +60,6 @@ useEffect(()=>{
    )
     .then((res) => res.json())
     .then((res) => {
-        console.log('====================================');
-        console.log(res);
-        console.log('====================================');
       setAvailableMaterials(res)
     });
 },[])
@@ -40,24 +67,33 @@ useEffect(()=>{
 
     function CreateInterventionBack() {
         let data = captureRef();
-        console.log('====================================');
-        console.log(data);
-        console.log('====================================');
+        let clientData = {
+            clientName: clientName.current.value.toLowerCase(),
+            groupName: groupName.current.value.toLowerCase(),
+            location: location.current.value.toLowerCase(),
+            codePostal: codePostal.current.value.toLowerCase(),
+            ville: ville.current.value.toLowerCase(),
+        };
+        console.log(clientData);
+        let tmp = {
+            clientData:clientData,
+            intervention:data
+        }
         fetch('http://localhost:3500/interventions/create', {
             method: "POST",
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(tmp)
         })
             .then(res => res.json())
             .then(res => {
                 if (!res.err) {
                     showNotification(res.msg)
-                    setTimeout(() => {
-                        Navigate("/interventions")
-                    }, 1500)
+                   // setTimeout(() => {
+                   //     Navigate("/interventions")
+                   // }, 1500)
                 }else{
                     showNotification("Il y a eu une erreure lors de la création de l'intervention. Veuillez réessayer")
                 }
@@ -66,10 +102,13 @@ useEffect(()=>{
 
     function captureRef() {
         return {
-            clientName: clientName.current.value,
-            location: address.current.value,
-            contractNumber: contractNumber.current.value,
-            startingDate: startingDate.current.value,
+            clientName: clientName.current.value.toLowerCase(),
+            groupName: groupName.current.value.toLowerCase(),
+            location: location.current.value.toLowerCase(),
+            codePostal: codePostal.current.value.toLowerCase(),
+            ville: ville.current.value.toLowerCase(),
+            contractNumber: contractNumber.current.value.toLowerCase(),
+            startingDate: startingDate.current.value.toLowerCase(),
             materials:selectedMaterials
         };
     }
@@ -82,8 +121,12 @@ useEffect(()=>{
                 <div className="first-letter">Nouvelle</div>
                 <div className="first-letter">Intervention</div>
             </div>
+            <button className="presetClient" onClick={()=> showNotification(<ModalClient allClient={allClient} hideNotification={hideNotification} setClientPreset={setClientPreset} />,"Annuler")}>Presets Client</button>
+            <InputComp ref={groupName}  label="Groupe" name="groupName" type="text" />
             <InputComp ref={clientName} label="Nom du Client" name="clientName" type="text" />
-            <InputComp ref={address} label="Adresse" name="address" type="text" />
+            <InputComp ref={location} label="Adresse" name="location" type="text" />
+            <InputComp ref={codePostal} label="Code postale" name="codePostal" type="text" />
+            <InputComp ref={ville} label="Ville" name="ville" type="text" />
             <InputComp ref={contractNumber} label="Numéro de devis" name="contractNumber" type="text" />
             <InputComp ref={startingDate} label="Date de Début" name="startingDate" type="date" />
             <p>{selectedMaterials.length?selectedMaterials.length+" matériels selectionné":"Pas de matériel selectionné"}</p>
@@ -117,8 +160,9 @@ const Previsualisation = ({data})=>{
     return(
         <div className="display__previsualisation">
             <h1>Données de l'intervention</h1>
+            {data.groupName&&<p><b>Groupe : </b>{data.groupName}</p>}
             {data.clientName&&<p><b>Nom : </b>{data.clientName}</p>}
-            {data.address&&<p><b>Adresse : </b> {data.address}</p>}
+            {data.location&&<p><b>Adresse : </b> {data.location}</p>}
             {data.contractNumber&&<p><b>Numéro de Devis : </b> {data.contractNumber}</p>}
             {data.startingDate&&<p><b>Date de Début : </b> {data.startingDate}</p>}
             {mapMaterials()}
@@ -157,9 +201,8 @@ const SelectMaterials = ({ list,setSelectedMaterials,selectedMaterials }) => {
             setSelectedMaterial(null); // Fermer la modal
     };
 
-    return (
-        <div className="material-list">
-            <div className="input__container">
+    return (<>
+    <div className="input__container">
             <input
                 type="text"
                 placeholder="Rechercher un matériel..."
@@ -167,6 +210,8 @@ const SelectMaterials = ({ list,setSelectedMaterials,selectedMaterials }) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             </div>
+        <div className="material-list">
+            
             
             <div className="material-items">
             {filteredList.length > 0 ? (
@@ -202,8 +247,29 @@ const SelectMaterials = ({ list,setSelectedMaterials,selectedMaterials }) => {
                     </div>
                 </div>
             )}
-        </div>
+        </div></>
     );
 };
 
+const ModalClient = (props)=>{
+    const {hideNotification} = useNotification()
+ 
+    return(
+        <>
+        <div className="clientList">
+            {props.allClient?.map((e,i)=>{
+                return (
+                    <p onClick={()=>{
+                        props.setClientPreset(e)
+                        hideNotification()
+                    }
+                        } key={i}> 
+                        <b>{e.groupName && e.groupName}</b> <em>{e.clientName && e.clientName}</em><br/> {e.ville && e.ville} {e.codePostal && e.codePostal} {e.location && e.location}
+                    </p>
+                )
+            })}
+            </div>
+        </>
+    )
+}
 export default CreateInterventionPage;

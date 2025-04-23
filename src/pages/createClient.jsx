@@ -3,16 +3,15 @@ import InputComp from "../components/inputComponent"
 import { server } from "../utils/server"
 const NewClientPage = (props) => {
     
-    let groupe = useRef()
+    let groupName = useRef()
     let nameClient = useRef()
-    let number = useRef()
-    let adress = useRef()
+    let location = useRef()
     let inputs = [
         {
             label:"Groupe",   
-            name: "group",
+            name: "groupName",
             type: "text",
-            ref: groupe
+            ref: groupName
 
         }
         ,
@@ -24,17 +23,17 @@ const NewClientPage = (props) => {
             pattern:"test"
 
         }, {
-            label:"Numéro de devis",
-            name: "number",
+            label:"Adresse du site",
+            name: "location",
             type: "text",
-            ref: number
+            ref: location
 
         }
     ]
     function CreateClientBack(){
             let data = captureRef()
             
-            fetch(server+'clients/create',{
+            fetch('http://localhost:3500/clients/create',{
                 method:"POST",
                 headers: {
                     "Accept": "*/*",
@@ -45,17 +44,16 @@ const NewClientPage = (props) => {
             .then((res) => res.json())
             .then((res) => {
               if(res.err){
-                props.setNotificationContent(res.err)
-                props.setNotificationState(true)
+
     
               }
             });
         }
     function captureRef() {
         let formObject = {
-            groupName:groupe.current.value.toLocaleUpperCase(),
+            groupName:groupName.current.value.toLocaleUpperCase(),
             clientName:nameClient.current.value.toLocaleUpperCase(),
-            contractNumber:number.current.value,
+            location:location.current.value,
         }
         console.log('====================================');
         console.log("objet envoyé au back:",formObject);

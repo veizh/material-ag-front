@@ -11,9 +11,7 @@ const NavComponent =()=>{
             setState(!state)}}>{<Menu strokeWidth={3.3} />}</div>
         <div className={state?"nav__icon background__nav active":"nav__icon background__nav"}> </div>
         <div className={state?'nav__list active':'nav__list'}>
-        <NavLink onClick={()=>setState(false)} to="/newIntervention">Rechercher</NavLink>
         <NavLink onClick={()=>setState(false)} to="/compte">compte</NavLink>
-        <NavLink onClick={()=>setState(false)} to="/NouveauClient">Nouveau Client</NavLink>
         <NavLink onClick={()=>setState(false)} to="/Interventions">Interventions</NavLink>
         </div>
         </>

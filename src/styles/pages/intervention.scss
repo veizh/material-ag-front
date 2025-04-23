@@ -34,7 +34,7 @@
 
         .materials {
             height: 100%;
-            overflow: scroll;
+            overflow: auto;
             width: 100%;
             &::-webkit-scrollbar {
                 width: 10px; /* Largeur de la scrollbar */
@@ -96,6 +96,9 @@
             }
             &:last-child{
                 border-right: none;
+            }
+            &.add{
+                background-color: rgb(127, 255, 159);
             }
             &.end{
                 background-color: rgb(255, 121, 121);

@@ -33,7 +33,7 @@
 }
 .intervention__container .content .materials {
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
   width: 100%;
 }
 .intervention__container .content .materials::-webkit-scrollbar {
@@ -92,6 +92,9 @@
 }
 .intervention__container .buttons__container .btn:last-child {
   border-right: none;
+}
+.intervention__container .buttons__container .btn.add {
+  background-color: rgb(127, 255, 159);
 }
 .intervention__container .buttons__container .btn.end {
   background-color: rgb(255, 121, 121);

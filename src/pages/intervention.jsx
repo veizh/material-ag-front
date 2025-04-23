@@ -2,20 +2,38 @@ import { useEffect, useRef, useState } from "react";
 import Select from "react-dropdown-select";
 import useConfirmation from "../utils/useConfirmation.js"; 
 import { useNotification } from "../utils/notificationContext.jsx"
-
 import { useNavigate, useParams } from "react-router-dom";
 import ClosingInterventionComponent from "../components/ClosingIntervention.jsx";
 import { server } from "../utils/server.js";
+import AddMaterial from "../components/AddMaterial.jsx";
 const InterventionPage = (props)=>{
     const Navigate = useNavigate()
     const [closingModalState,setClosingModalState] = useState(false)
     const [data,setData]=useState()
+    
+    const [availableMaterials, setAvailableMaterials] = useState([]);
+    const [selectedMaterials, setSelectedMaterials] = useState([]);
+    const [allSites,setAllSites] = useState()
     const { id } = useParams();
     const { showNotification } = useNotification();
     
     function toggleClosingModal(){
         setClosingModalState(!closingModalState)
     }
+    useEffect(() => {
+        fetch("https://stock-ag-back.vercel.app/products/getAll", {
+   headers: {
+     Accept: "*/*",
+     "Content-Type": "application/json"
+   },
+   method: "GET"
+}
+  )
+   .then((res) => res.json())
+   .then((res) => {
+     setAvailableMaterials(res)
+   });
+},[])
     useEffect(()=>{
         fetch(server +'interventions/getOne/'+id, {
             method: "GET",
@@ -26,13 +44,41 @@ const InterventionPage = (props)=>{
         })
             .then(res => res.json())
             .then(res => {
-                if (res.err) {
+                if (res.status===400) {
                     showNotification("Il y a un problème d'ID")
                     setTimeout(() => {
                         Navigate("/home")
                     }, (2000));
                 }else{
+                    console.log('====================================');
+                    console.log(res);
+                    console.log('====================================');
                     setData(res)
+                }
+                
+            });
+            fetch(server+'interventions/getAllInterventions',{
+                method:"GET",
+                headers:{
+                    "Accept": "*/*",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.err) {
+                    setTimeout(() => {
+                        Navigate("/home")
+                    }, (2000));
+                }else{
+                   let tmp = []
+                    res.filter(e=>e._id!==id).map(e=>{
+                        if(e.state!=="En cours")return
+                        else{
+                            tmp.push(e)
+                        }
+                    })
+                    setAllSites(tmp)
                 }
                 
             });
@@ -43,7 +89,7 @@ const InterventionPage = (props)=>{
         <div className="intervention__container">
             {closingModalState && <ClosingInterventionComponent toggle={toggleClosingModal} data={data} />}
             <div className="content">
-                    <h1>{data && data.clientName}</h1>
+                    <h1>{data && data.groupName} - {data && data.clientName}</h1>
                 <div className="informations">
                     <p>Date de départ : {data && data.startingDate}</p>
                     <p>{data && data.location}</p>
@@ -58,8 +104,10 @@ const InterventionPage = (props)=>{
 
             <div className="buttons__container">
                 <div onClick={()=>{
-                    showNotification(<ModalConfirm AllCurrentSite={fakeData} allMaterial={data && data.materials} />,"Annuler")
+                    showNotification(<ModalConfirm site={data} AllCurrentSite={allSites} allMaterial={data && data.materials} />,"Annuler")
                 }}className="btn transfer">Transferer du matériel</div>
+                <div onClick={()=>showNotification(<AddMaterial dataInter={data} list={availableMaterials} selectedMaterials={selectedMaterials} setSelectedMaterials={()=>setSelectedMaterials}/>,"Annuler")} className="btn add">Ajouter du matériel</div>
+
                 <div onClick={()=>toggleClosingModal()} className="btn end">Cloturer le site</div>
             </div>
         </div>
@@ -73,13 +121,17 @@ const ModalConfirm = (props) => {
     const { showNotification } = useNotification();
 
     useEffect(() => {
-        console.log('====================================');
-        console.log(props.allMaterial);
-        console.log('====================================');
-        let tmp = props.AllCurrentSite.filter(e => e.state === "En cours");
+        let tmp =[]
+        props.AllCurrentSite.map(e=>{
+            
+            let x = e
+            x.placeholder = [e.groupName ,e.clientName, e.ville, e.location,e.contractNumber].filter(Boolean).join(' - ');
+            tmp.push(x)
+        })
         setData(tmp);
+        console.log(data);
+        
     }, [props.AllCurrentSite]);
-
     // Fonction pour ajouter un matériau sélectionné
     const pushtoselecteMaterials = (e) => {
         setMaterialsSelected(prevState => [...prevState, ...e]);
@@ -92,12 +144,35 @@ const ModalConfirm = (props) => {
 
     // Fonction pour confirmer le transfert du matériel
     const handleTransfer = async () => {
-        const isConfirmed = await askConfirmation(   `Êtes-vous sûr de vouloir transférer ce matériel au site de ${values[0].clientName} situé à ${values[0].siteLocation} ?`)
+        const isConfirmed = await askConfirmation(   `Êtes-vous sûr de vouloir transférer ce matériel au site de ${values[0].clientName} situé à ${values[0].location} ?`)
         if (isConfirmed) {
             console.log("Matériel transféré:", materialsSelected);
-            
-            showNotification("Le transfert à été effectué","Ok")
+            console.log("siteA:", props.site);
+            console.log("siteB:", values[0]);
+            let objectSites = {
+                siteA:props.site,
+                siteB:values[0],
+                materialsSelected:materialsSelected
+            }
+            fetch("http://localhost:3500/interventions/transferMaterial/", {
+                method: "PUT",
+                headers: {
+                    "Accept": "*/*",
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify(objectSites)
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if(res.status===400 ){
+                        showNotification("Erreur lors du transfer","Ok")
 
+                    }else{
+
+                        showNotification("Le transfert à été effectué","Ok")
+                    }
+                }
+                )
             // Ici tu peux ajouter la logique de transfert (par exemple mettre à jour l'état, envoyer les données à un serveur, etc.)
         } else {
             console.log("Transfert annulé");
@@ -105,7 +180,7 @@ const ModalConfirm = (props) => {
 
         }
     };
-
+        
     return (
         <>
             {modal} {/* Affiche la modale uniquement si nécessaire */}
@@ -113,8 +188,8 @@ const ModalConfirm = (props) => {
             <Select 
         className="select"
                 options={data} 
-                valueField={"siteLocation"} 
-                labelField={"siteLocation"} 
+                valueField={"placeholder"} 
+                labelField={"placeholder"} 
                 placeholder="Select a client"
                 onChange={(newValues) => setValues(newValues)} 
             />
@@ -137,6 +212,16 @@ const ModalConfirm = (props) => {
                     product={e.name} 
                     quantity={e.quantity} 
                     onRemove={() => removeMaterial(i)} 
+                    onChangeQuantity={(x)=>{
+                        const newMaterials = [...materialsSelected];
+                        newMaterials[i] = {
+                            ...newMaterials[i],
+                            quantity: x.target.value
+                        };
+                        setMaterialsSelected(newMaterials);
+                        
+                        }
+                    }
                 />
             ))}
 
@@ -148,22 +233,22 @@ const ModalConfirm = (props) => {
                         return 
                     }
                 
-                handleTransfer()}} className="btn transfer">
-                Transférer le matériel
+                handleTransfer()}} className="btn transfer oranged">
+                TRANSFERER LE MATERIEL
             </button>
         </>
     );
 };
 
 
-const MaterialRow = ({ product, quantity, onRemove, onQuantityChange }) => {
+const MaterialRow = ({ product, quantity, onRemove,onChangeQuantity }) => {
     return (
         <div className="material__row" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <p>{product}</p>
             <input 
                 type="number" 
-                value={quantity} 
-                onChange={(e) => onQuantityChange(e.target.value)}
+                defaultValue={quantity}
+                onChange={(e) => onChangeQuantity(e)}
                 style={{ width: "60px", textAlign: "center" }}
             />
             <div onClick={onRemove} style={ {cursor: "pointer"}}>❌</div>
@@ -220,84 +305,6 @@ const fakeData = [
         state: "Annulé",
         test:"hehehe",
         test2:"ahahah"
-    },{
-        clientName: "Société Alpha",
-        siteLocation: "Paris, France",
-        startingDate: "2024-05-12",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ahahah aaaaaaaaaa aaaaaaaaaaa aaaaaaa"
-    },
-    {
-        clientName: "Entreprise Beta",
-        siteLocation: "Lyon, France",
-        startingDate: "2024-03-28",
-        state: "Terminé",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Groupe Gamma",
-        siteLocation: "Marseille, France",
-        startingDate: "2024-07-10",
-        state: "Planifié",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Société Delta",
-        siteLocation: "Toulouse, France",
-        startingDate: "2023-11-15",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Entreprise Epsilon",
-        siteLocation: "Bordeaux, France",
-        startingDate: "2024-01-05",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ahahah"
-    },{
-        clientName: "Société Alpha",
-        siteLocation: "Paris, France",
-        startingDate: "2024-05-12",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ahahahaaaa aaaaaaaaaa aaaaaaaaaaaaaa"
-    },
-    {
-        clientName: "Entreprise Beta",
-        siteLocation: "Lyon, France",
-        startingDate: "2024-03-28",
-        state: "Terminé",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Groupe Gamma",
-        siteLocation: "Marseille, France",
-        startingDate: "2024-07-10",
-        state: "Planifié",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Société Delta",
-        siteLocation: "Toulouse, France",
-        startingDate: "2023-11-15",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Entreprise Epsilon",
-        siteLocation: "Bordeaux, France",
-        startingDate: "2024-01-05",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ahahah"
-    },
+    }
 ];
 export default InterventionPage

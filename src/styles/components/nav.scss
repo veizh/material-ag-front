@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 2vw;
+    bottom: 2vw;
     right: 2vw;
     width: 8vw;
     max-width: 80px;
@@ -54,10 +54,11 @@
         color: #1d1d1d;
         font-weight: 800;
         width: 400px;
-        font-size: 35px;
+        letter-spacing: 1.1px;
+        font-size: 37px;
         border-top: 3px solid #1d1d1d;
         &.active{
-            color: #ed6e0b;
+            color: #eb6c0b;
         }
         &:nth-child(1){
             border: none;

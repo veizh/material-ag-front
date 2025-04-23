@@ -4,6 +4,9 @@
   height: 100%;
   border-radius: 15px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .table__header {
@@ -13,7 +16,17 @@
   font-size: 32px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-left: 28px;
+}
+.table__header input {
+  margin-right: 20px;
+  width: 300px;
+  outline: none;
+  border: 2px solid rgb(148, 148, 148);
+  padding: 5px 10px;
+  border-radius: 1px;
+  font-size: 25px;
 }
 .table__header h1 {
   padding: 10px 0;
@@ -33,7 +46,7 @@
   overflow: auto;
 }
 .table__body::-webkit-scrollbar {
-  width: 10px; /* Largeur de la scrollbar */
+  width: 10px;
   height: 10px;
 }
 .table__body::-webkit-scrollbar-track {
@@ -98,6 +111,8 @@
   max-width: 300px;
   text-wrap: wrap;
   word-break: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .table__body tbody tr {
   cursor: pointer;
