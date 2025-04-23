@@ -35,7 +35,7 @@ const InterventionPage = (props)=>{
    });
 },[])
     useEffect(()=>{
-        fetch(server +'interventions/getOne/'+id, {
+        fetch('https://back-material-ag.vercel.app/interventions/getOne/'+id, {
             method: "GET",
             headers: {
                 "Accept": "*/*",
@@ -57,7 +57,7 @@ const InterventionPage = (props)=>{
                 }
                 
             });
-            fetch(server+'interventions/getAllInterventions',{
+            fetch('https://back-material-ag.vercel.app/interventions/getAllInterventions',{
                 method:"GET",
                 headers:{
                     "Accept": "*/*",
@@ -154,7 +154,7 @@ const ModalConfirm = (props) => {
                 siteB:values[0],
                 materialsSelected:materialsSelected
             }
-            fetch("http://localhost:3500/interventions/transferMaterial/", {
+            fetch("https://back-material-ag.vercel.app/interventions/transferMaterial/", {
                 method: "PUT",
                 headers: {
                     "Accept": "*/*",

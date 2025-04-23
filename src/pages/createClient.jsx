@@ -1,6 +1,5 @@
 import { useRef } from "react"
 import InputComp from "../components/inputComponent"
-import { server } from "../utils/server"
 const NewClientPage = (props) => {
     
     let groupName = useRef()

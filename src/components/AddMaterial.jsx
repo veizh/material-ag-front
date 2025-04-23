@@ -49,7 +49,7 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
             console.log('====================================');
             console.log("product to push",data);
             console.log('====================================');
-               fetch("http://localhost:3500/interventions/updateIntervention/"+data._id, {
+               fetch("https://back-material-ag.vercel.app/interventions/updateIntervention/"+data._id, {
                    method: "PUT",
                    headers: {
                        "Accept": "*/*",

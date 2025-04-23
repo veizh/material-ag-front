@@ -9,7 +9,7 @@ const ClosingInterventionComponent = ({ data ,toggle}) => {
         let tmp = data
         tmp.endingDate = endingDate.current.value
         tmp.state="Terminé"
-        fetch("http://localhost:3500/interventions/updateIntervention/"+data._id, {
+        fetch("https://back-material-ag.vercel.app/interventions/updateIntervention/"+data._id, {
             method: "PUT",
             headers: {
                 "Accept": "*/*",
