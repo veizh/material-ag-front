@@ -32,7 +32,7 @@ const NewClientPage = (props) => {
     function CreateClientBack(){
             let data = captureRef()
             
-            fetch('http://localhost:3500/clients/create',{
+            fetch('https://back-material-ag.vercel.app/clients/create',{
                 method:"POST",
                 headers: {
                     "Accept": "*/*",
