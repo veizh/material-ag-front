@@ -31,6 +31,14 @@
   padding-bottom: 10px;
   padding-top: 15px;
 }
+.intervention__container .content .informations p {
+  font-size: 25px;
+  padding: 5px 20px;
+}
+.intervention__container .content .informations p b {
+  color: rgb(122, 55, 0);
+  font-weight: 800;
+}
 .intervention__container .content .materials {
   height: 100%;
   overflow: auto;

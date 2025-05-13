@@ -119,6 +119,25 @@ background-color: rgb(221, 221, 221);
         width: 80%;
         max-height: 60vh;
         overflow: auto;
+        input{
+            all: unset;
+            padding: 5px;
+            background-color: whitesmoke;
+            border: 1px solid black;
+
+        }
+        label{
+            margin-bottom: 5px;
+        }
+        .selected{
+            background-color: #ec6a00;
+                        color: black;
+
+        }
+        .notselected{
+            background-color: whitesmoke;
+            color: black;
+        }
         .material-list {
             display: flex;
             justify-content: center;
@@ -210,6 +229,37 @@ background-color: rgb(221, 221, 221);
         }
     }
 }
+.list__acc{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+}
+.puce__acc{
+    display: flex;
+    font-size: 25px;
+    justify-content: space-between;
+    width: 100%;
+    height: 70px;
+    padding: 5px 15px;
+        background-color: #dbdbdb;
+        &:nth-child(even){
+            background-color: rgb(156, 156, 156);
+        }
+    align-items: center;
+    button{
+        all: unset;
+        background-color: rgb(255, 101, 101);
+        color: rgb(15, 15, 15);
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-weight: 500;
+    }
+}
+.checkbox{
+    height: 100%!important;
+    aspect-ratio: 1/1!important;
+}
 .react-dropdown-select-dropdown-handle {
 svg{
     height: 45px!important;
@@ -231,6 +281,16 @@ svg{
     align-items: center;
     z-index: 950;
 
+}
+.selectBtn:nth-child(1){
+    border-bottom: 2px solid black;
+}
+.selectBtn{
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+    padding: 5px 10px;
+    
 }
 .oranged{
     background-color: #ec6a00!important;

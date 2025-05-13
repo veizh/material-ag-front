@@ -7,6 +7,7 @@ import './styles/pages/home.css';
 import './styles/pages/intervention.css';
 import './styles/components/table.css';
 import './styles/components/input.css';
+import './styles/components/select.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 

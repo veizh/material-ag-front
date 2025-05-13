@@ -139,7 +139,13 @@ const HomePage =()=>{
     const [allInter,setAllInterventions] =useState()
     const [sortedInter,setSortedInter] =useState()
     const [searchTerm,setSearchTerm] =useState()
-
+  let [role,setRole]=useState("remploye")
+    useEffect(()=>{
+        if(window.localStorage.getItem('user')){
+            let user = JSON.parse(window.localStorage.getItem('user'))
+           user.role&&setRole(user.role)
+        }
+    },[])
     function filterAllInter(){
        
         let tmp = []
@@ -151,15 +157,23 @@ const HomePage =()=>{
                         e.state?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         e.groupName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         e.contractNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        e.location?.toLowerCase().includes(searchTerm.toLowerCase())
+                        e.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        e.ville?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        e.codePostal?.toLowerCase().includes(searchTerm.toLowerCase()) 
                       ) {
                         tmp.push(e)
-                    console.log(e.location);
+
+                       return setSortedInter(tmp)
+                    }
+                    e.materials.map(item=>{
+                        if( item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        item.ref.toLowerCase().includes(searchTerm.toLowerCase()) 
+                    ){
+                         tmp.push(e)
+                         return setSortedInter(tmp)
 
                     }
-                    console.log(tmp);
-                        setSortedInter(tmp)
-                        
+                    })         
                 } catch (error) {
                     
                 }
@@ -202,23 +216,20 @@ useEffect(()=>{
                 <table>
                     <thead>
                         <tr>
+                            <th className="nowrap ">N° Devis</th>
                         <th className="nowrap">Group</th>
 
                             <th className="nowrap">Client</th>
-                            <th className="nowrap">Site</th>
-                            <th className="nowrap state">Statut</th>
                             <th className="nowrap">Date de départ</th>
-                            <th className="nowrap">Date de Cloture</th>
-                            <th className="nowrap ">N° Devis</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {searchTerm&&searchTerm.length>1?sortedInter?.map((e,i)=>{return tableLine(e,i,Navigate)}):allInter?.map((e,i)=>{return tableLine(e,i,Navigate)})}
+                        {searchTerm&&searchTerm.length>1?sortedInter?.map((e,i)=>{return e.state==="En cours"&&tableLine(e,i,Navigate)}):allInter?.map((e,i)=>{return e.state==="En cours" && tableLine(e,i,Navigate)})}
                     </tbody>
                 </table>
                 
             </div>
-        <button onClick={()=>Navigate("/createIntervention")}>NOUVELLE INTERVENTION<CirclePlus className="icon" size={40} /></button>
+        {role==="admin"&&<button onClick={()=>Navigate("/createIntervention")}>NOUVELLE INTERVENTION<CirclePlus className="icon" size={40} /></button>}
 
         </main>
 </div>
@@ -227,17 +238,14 @@ useEffect(()=>{
 export default HomePage
 
 function tableLine(data,i,Navigate){
+    console.log(data);
     
     return(
         <tr key={i} onClick={()=>Navigate("/intervention/"+data._id)}>
+            <td className="nowrap"><b>{data.contractNumber?data.contractNumber:"N/R"}</b></td>
             <td className="bold groupName">{data.groupName}</td>
             <td className="clientName">{data.clientName}</td>
-            <td className="nowrap">{data.location}</td>
-            {data.state==="En cours"&&<td className="nowrap state"><p className="bold blue">{data.state}</p></td>}
-            {data.state==="Terminé"&&<td className="nowrap state"><p className="bold green">{"Cloturer"}</p></td>}
             <td className="nowrap">{data.startingDate?data.startingDate:"Non Renseigné"}</td>
-            <td className="nowrap">{data.endingDate?data.endingDate:"Non Renseigné"}</td>
-            <td className="nowrap"><b>{data.contractNumber?data.contractNumber:"N/R"}</b></td>
 
         </tr>
     )

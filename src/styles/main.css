@@ -116,6 +116,23 @@ section.content {
   max-height: 60vh;
   overflow: auto;
 }
+.dialog__notification .dialog__content input {
+  all: unset;
+  padding: 5px;
+  background-color: whitesmoke;
+  border: 1px solid black;
+}
+.dialog__notification .dialog__content label {
+  margin-bottom: 5px;
+}
+.dialog__notification .dialog__content .selected {
+  background-color: #ec6a00;
+  color: black;
+}
+.dialog__notification .dialog__content .notselected {
+  background-color: whitesmoke;
+  color: black;
+}
 .dialog__notification .dialog__content .material-list {
   display: flex;
   justify-content: center;
@@ -196,6 +213,40 @@ section.content {
   color: whitesmoke;
 }
 
+.list__acc {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+}
+
+.puce__acc {
+  display: flex;
+  font-size: 25px;
+  justify-content: space-between;
+  width: 100%;
+  height: 70px;
+  padding: 5px 15px;
+  background-color: #dbdbdb;
+  align-items: center;
+}
+.puce__acc:nth-child(even) {
+  background-color: rgb(156, 156, 156);
+}
+.puce__acc button {
+  all: unset;
+  background-color: rgb(255, 101, 101);
+  color: rgb(15, 15, 15);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-weight: 500;
+}
+
+.checkbox {
+  height: 100% !important;
+  aspect-ratio: 1/1 !important;
+}
+
 .react-dropdown-select-dropdown-handle svg {
   height: 45px !important;
   width: 45px !important;
@@ -216,6 +267,17 @@ section.content {
   justify-content: center;
   align-items: center;
   z-index: 950;
+}
+
+.selectBtn:nth-child(1) {
+  border-bottom: 2px solid black;
+}
+
+.selectBtn {
+  width: 100%;
+  text-align: center;
+  font-size: 25px;
+  padding: 5px 10px;
 }
 
 .oranged {

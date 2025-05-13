@@ -29,4 +29,22 @@
 .home__container button .icon {
   margin-left: 10px;
   stroke-width: 2.5px;
+}
+
+.addACC {
+  all: unset;
+  padding: 15px 30px;
+  outline: 1px solid #ffffff;
+  color: #ffffff;
+  background-color: rgb(36, 36, 36);
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+.addACC .icon {
+  margin-left: 10px;
+  stroke-width: 2.5px;
 }/*# sourceMappingURL=home.css.map */

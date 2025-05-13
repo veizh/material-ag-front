@@ -35,39 +35,60 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
         setSelectedMaterial(null); // Fermer la modal
     };
     const updateIntervention=()=>{
+        confirmAddMaterial()
+        let item = {
+            name: selectedMaterial.name,
+            ref: selectedMaterial.ref,
+            quantity: quantity
+        }   
+        let tmp = dataInter
             console.log('====================================');
             console.log(dataInter._id);
             console.log('====================================');
+            console.log("interdata material before push:",tmp);
             console.log('====================================');
-            console.log("interdata:",dataInter);
-            console.log('====================================');
-            let data = dataInter
-            selectedMaterials?.map(e=>{
-                data.materials.push(e)
-            })
+            let exist = false
+           dataInter.materials.map((e,i)=>{
+            if(e.ref===item.ref){
+                e.quantity=parseInt(e.quantity)+parseInt(item.quantity)
+                exist=true
+            }
+        })
+        !exist&&dataInter.materials.push(item)
 
             console.log('====================================');
-            console.log("product to push",data);
+            console.log("product to push",item);
             console.log('====================================');
-               fetch("https://back-material-ag.vercel.app/interventions/updateIntervention/"+data._id, {
-                   method: "PUT",
-                   headers: {
-                       "Accept": "*/*",
-                       "Content-Type": "application/json"
-                   },
-                   body:JSON.stringify(data)
-               })
-                   .then(res => res.json())
-                   .then(res => {
-                       if (res.status===400 || res.status===500) {
-                           showNotification("Il y a un problème")
-                           
-                       }else{
-                        showNotification("ALL GOOD")
+            console.log('====================================');
+            console.log("interdata material after push:",dataInter);
+            fetch("https://stock-ag-back.vercel.app/products/addProductAndHandleAlert/" + item.ref, {
+      method: "PUT",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ quantity: -quantity })
+    }).then(res=>res.json())
+            console.log('====================================');
+              fetch("https://back-material-ag.vercel.app/interventions/updateIntervention/"+dataInter._id, {
+                  method: "PUT",
+                  headers: {
+                      "Accept": "*/*",
+                      "Content-Type": "application/json"
+                  },
+                  body:JSON.stringify(dataInter)
+              })
+                  .then(res => res.json())
+                  .then(res => {
+                      if (res.status===400 || res.status===500) {
+                          showNotification("Il y a un problème")
+                          
+                      }else{
+                       showNotification("Matériel ajouté")
 
-                       }
-                       
-                   });
+                      }
+                      
+                  });
     }
     return (<div>
            <div className="input__container">
@@ -108,7 +129,7 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
                         />
                         <div className="modal-buttons">
                             <button onClick={() => setSelectedMaterial(null)}>Annuler</button>
-                            <button onClick={() => confirmAddMaterial()} disabled={quantity < 0}>
+                            <button onClick={() => updateIntervention()} disabled={quantity < 0}>
                                 Confirmer
                             </button>
                         </div>
@@ -116,7 +137,6 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
                 </div>
             )}
         </div>
-            <button className="btn center" onClick={()=>updateIntervention() }>AJOUTER LE MATERIEL</button>
     </div>
     );
 };

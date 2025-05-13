@@ -3,6 +3,7 @@ import Select from "react-dropdown-select";
 import useConfirmation from "../utils/useConfirmation.js"; 
 import { useNotification } from "../utils/notificationContext.jsx"
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelect } from '../utils/selectContext';
 import ClosingInterventionComponent from "../components/ClosingIntervention.jsx";
 import { server } from "../utils/server.js";
 import AddMaterial from "../components/AddMaterial.jsx";
@@ -16,10 +17,17 @@ const InterventionPage = (props)=>{
     const [allSites,setAllSites] = useState()
     const { id } = useParams();
     const { showNotification } = useNotification();
-    
+      let [role,setRole]=useState("remploye")
+    useEffect(()=>{
+        if(window.localStorage.getItem('user')){
+            let user = JSON.parse(window.localStorage.getItem('user'))
+           user.role&&setRole(user.role)
+        }
+    },[])
     function toggleClosingModal(){
         setClosingModalState(!closingModalState)
     }
+  
     useEffect(() => {
         fetch("https://stock-ag-back.vercel.app/products/getAll", {
    headers: {
@@ -91,67 +99,95 @@ const InterventionPage = (props)=>{
             <div className="content">
                     <h1>{data && data.groupName} - {data && data.clientName}</h1>
                 <div className="informations">
+                    <p>Statut :<b> {data && data.state}</b></p>
+                    <p>N° devis :<b> {data && data.contractNumber}</b></p>
                     <p>Date de départ : {data && data.startingDate}</p>
-                    <p>{data && data.location}</p>
+                    {data&&data.endingDate&&<p>Date de cloture : {data.endingDate}</p>}
+                    <p>{data && (data.location+", "+data.ville+", "+data.codePostal)}</p>
                 </div>
-                    <h1>materiels sur site</h1>
+                    <h1>{data&&data.state==="En cours"?'materiels sur site':"Matériels utilisés"}</h1>
                 <div className="materials">
                     {data && data.materials.map((e,i)=>{
+                        if(e.quantity===null || e.quantity ===0) return
                         return(<div key={i} className="row__material"><p>{e.name}</p><div className="separation"></div><p>{e.quantity}</p></div>)
                     })}
                 </div>
             </div>
 
             <div className="buttons__container">
-                <div onClick={()=>{
+               {
+                data&&data.state==="En cours"&&
+                <><div onClick={()=>{
                     showNotification(<ModalConfirm site={data} AllCurrentSite={allSites} allMaterial={data && data.materials} />,"Annuler")
                 }}className="btn transfer">Transferer du matériel</div>
-                <div onClick={()=>showNotification(<AddMaterial dataInter={data} list={availableMaterials} selectedMaterials={selectedMaterials} setSelectedMaterials={()=>setSelectedMaterials}/>,"Annuler")} className="btn add">Ajouter du matériel</div>
-
-                <div onClick={()=>toggleClosingModal()} className="btn end">Cloturer le site</div>
+                <div onClick={()=>showNotification(<AddMaterial dataInter={data} list={availableMaterials} selectedMaterials={selectedMaterials} setSelectedMaterials={()=>setSelectedMaterials}/>,"Quitter")} className="btn add">Ajouter du matériel</div>
+               
+                {role==="admin"&&<div onClick={()=>toggleClosingModal()} className="btn end">Cloturer le site</div>}</>}
+                
             </div>
         </div>
     )
 }
 const ModalConfirm = (props) => {
     const { modal, askConfirmation } = useConfirmation(); // Utilisation du hook de confirmation
-    const [values, setValues] = useState([]); // Valeur du site sélectionné
+    const [values, setValues] = useState(); // Valeur du site sélectionné
     const [materialsSelected, setMaterialsSelected] = useState([]); // Matériaux sélectionnés
     const [data, setData] = useState([]); // Données des sites
     const { showNotification } = useNotification();
-
+    const { showSelect } = useSelect();
     useEffect(() => {
         let tmp =[]
-        props.AllCurrentSite.map(e=>{
+        props.AllCurrentSite?.map(e=>{
             
             let x = e
             x.placeholder = [e.groupName ,e.clientName, e.ville, e.location,e.contractNumber].filter(Boolean).join(' - ');
             tmp.push(x)
         })
         setData(tmp);
-        console.log(data);
         
     }, [props.AllCurrentSite]);
+    useEffect(() => {
+        console.log('====================================');
+        console.log("test values:",values);
+        console.log('====================================');
+        
+    }, [values]);
     // Fonction pour ajouter un matériau sélectionné
     const pushtoselecteMaterials = (e) => {
-        setMaterialsSelected(prevState => [...prevState, ...e]);
+        const toAdd = Array.isArray(e) ? e : [e]; // Assure que c'est un tableau
+        setMaterialsSelected(prevState => [...prevState, ...toAdd]);
     };
-
     // Fonction pour supprimer un matériau sélectionné
     const removeMaterial = (index) => {
         setMaterialsSelected((prev) => prev.filter((_, i) => i !== index));
     };
-
+    const handleOpen = (options,labelKey,fct) => {
+        showSelect({
+            options: options,
+            labelKey: labelKey,
+            onSelect: (obj) => {
+                fct(obj)
+                console.log("Objet sélectionné :", obj);
+            }
+        });
+    };
     // Fonction pour confirmer le transfert du matériel
     const handleTransfer = async () => {
-        const isConfirmed = await askConfirmation(   `Êtes-vous sûr de vouloir transférer ce matériel au site de ${values[0].clientName} situé à ${values[0].location} ?`)
+        console.log("Matériel transféré:", materialsSelected);
+            console.log("siteA:", props.site);
+            console.log("siteB:", values);
+            if (!values) {
+                showNotification("Veuillez d'abord sélectionner un site","Ok");
+                return;
+            }
+        const isConfirmed = await askConfirmation(   `Êtes-vous sûr de vouloir transférer ce matériel au site de ${values.clientName} situé à ${values.location} ?`)
         if (isConfirmed) {
             console.log("Matériel transféré:", materialsSelected);
             console.log("siteA:", props.site);
-            console.log("siteB:", values[0]);
+            console.log("siteB:", values);
             let objectSites = {
                 siteA:props.site,
-                siteB:values[0],
+                siteB:values,
                 materialsSelected:materialsSelected
             }
             fetch("https://back-material-ag.vercel.app/interventions/transferMaterial/", {
@@ -185,27 +221,9 @@ const ModalConfirm = (props) => {
         <>
             {modal} {/* Affiche la modale uniquement si nécessaire */}
 
-            <Select 
-        className="select"
-                options={data} 
-                valueField={"placeholder"} 
-                labelField={"placeholder"} 
-                placeholder="Select a client"
-                onChange={(newValues) => setValues(newValues)} 
-            />
-            <Select 
-        className="select"
-
-                options={props.allMaterial} 
-                valueField={"name"} 
-                labelField={"name"} 
-                placeholder="Select material"
-
-                onChange={(newValues) => {
-                    pushtoselecteMaterials(newValues);
-                }} 
-            />
-
+       
+            <div className="selectBtn" onClick={()=>handleOpen(data,"placeholder",setValues)} >{values?values.clientName+ " " + values.location:"Selectionnez un site" }</div>
+            <div className="selectBtn" onClick={()=>handleOpen(props.allMaterial,"name",pushtoselecteMaterials)} >Selectionnez le matériel </div>
             {materialsSelected.map((e, i) => (
                 <MaterialRow 
                     key={i} 
@@ -226,7 +244,7 @@ const ModalConfirm = (props) => {
             ))}
 
             <button  onClick={()=>{
-                    if(values.length===0){
+                    if(!values){
                         console.log('====================================');
                         console.log("besoin de selectionner un client");
                         console.log('====================================');
@@ -249,13 +267,12 @@ const MaterialRow = ({ product, quantity, onRemove,onChangeQuantity }) => {
                 type="number" 
                 defaultValue={quantity}
                 onChange={(e) => onChangeQuantity(e)}
-                style={{ width: "60px", textAlign: "center" }}
+                style={{ width: "100px", textAlign: "center" }}
             />
             <div onClick={onRemove} style={ {cursor: "pointer"}}>❌</div>
         </div>
     );
 };
-
 
 const fakeData = [
     {

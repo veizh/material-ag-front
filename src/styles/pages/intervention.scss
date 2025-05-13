@@ -29,7 +29,14 @@
             gap: 10px;
             padding-bottom: 10px;
             padding-top: 15px;
-
+            p {
+                font-size: 25px;
+                padding: 5px 20px;
+                b{
+                    color: rgb(122, 55, 0);
+                    font-weight: 800;
+                }
+            }
         }
 
         .materials {

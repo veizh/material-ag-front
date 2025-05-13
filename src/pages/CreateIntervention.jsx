@@ -5,6 +5,7 @@ import ConfirmationModal from "../components/ConfirmationModal";
 import { server } from "../utils/server";
 import { useNotification } from "../utils/notificationContext";
 import { useNavigate } from "react-router-dom";
+import { useSelect } from "../utils/selectContext";
 const CreateInterventionPage = () => {
     const Navigate = useNavigate()
     const { showNotification,hideNotification } = useNotification();
@@ -14,6 +15,7 @@ const CreateInterventionPage = () => {
     let codePostal = useRef();
     let ville = useRef();
     let contractNumber = useRef();
+    const { showSelect } = useSelect();
     let [allClient,setAllClient] = useState()
     let startingDate = useRef();
     const [availableMaterials, setAvailableMaterials] = useState([]);
@@ -39,8 +41,13 @@ const CreateInterventionPage = () => {
               .then((res) => res.json())
               .then((res) => {
                 console.log(res);
-                
-                setAllClient(res)
+                let table = []
+                res?.map(e=>{
+                    let tmp =e
+                    tmp.placeholder =e.groupName+" - " + e.clientName+" - "+ e.ville+" - " + e.codePostal +" - " + e.location
+                    table.push(tmp)
+                })
+                setAllClient(table)
               });
         
     },[])
@@ -67,6 +74,9 @@ useEffect(()=>{
 
     function CreateInterventionBack() {
         let data = captureRef();
+        if(!data.startingDate || !data.clientName || !data.contractNumber  ||  !data.location||  !data.codePostal||  !data.ville){
+            return showNotification('Veuillez remplir tout les champs !',"ok")
+        }
         let clientData = {
             clientName: clientName.current.value.toLowerCase(),
             groupName: groupName.current.value.toLowerCase(),
@@ -113,7 +123,16 @@ useEffect(()=>{
         };
     }
 
-  
+    const handleOpen = (options,labelKey,fct) => {
+        showSelect({
+            options: options,
+            labelKey: labelKey,
+            onSelect: (obj) => {
+                fct(obj)
+                console.log("Objet sélectionné :", obj);
+            }
+        });
+    };
 
     return (
         <div className="create__client__form form">
@@ -121,18 +140,27 @@ useEffect(()=>{
                 <div className="first-letter">Nouvelle</div>
                 <div className="first-letter">Intervention</div>
             </div>
-            <button className="presetClient" onClick={()=> showNotification(<ModalClient allClient={allClient} hideNotification={hideNotification} setClientPreset={setClientPreset} />,"Annuler")}>Presets Client</button>
-            <InputComp ref={groupName}  label="Groupe" name="groupName" type="text" />
+            {//<button className="presetClient" onClick={()=> showNotification(<ModalClient allClient={allClient} hideNotification={hideNotification} setClientPreset={setClientPreset} />,"Annuler")}>Presets Client</button>
+}
+<button className="preset" onClick={()=>{handleOpen(allClient,"placeholder",setClientPreset)}}>preset</button>
+           <InputComp ref={groupName}  label="Groupe" name="groupName" type="text" />
             <InputComp ref={clientName} label="Nom du Client" name="clientName" type="text" />
             <InputComp ref={location} label="Adresse" name="location" type="text" />
             <InputComp ref={codePostal} label="Code postale" name="codePostal" type="text" />
             <InputComp ref={ville} label="Ville" name="ville" type="text" />
             <InputComp ref={contractNumber} label="Numéro de devis" name="contractNumber" type="text" />
             <InputComp ref={startingDate} label="Date de Début" name="startingDate" type="date" />
-            <p>{selectedMaterials.length?selectedMaterials.length+" matériels selectionné":"Pas de matériel selectionné"}</p>
-            <button onClick={() => showNotification(<SelectMaterials list={availableMaterials} selectedMaterials={selectedMaterials}  setSelectedMaterials={setSelectedMaterials} />,'valider')}>Sélectionner le Matériel</button>
-            <button onClick={()=>showNotification(<Previsualisation data={captureRef()} />)}>Prévisualiser</button>
-            <button onClick={() => CreateInterventionBack()}>Créer l'Intervention</button>
+           {/* <button onClick={() => showNotification(<SelectMaterials list={availableMaterials} selectedMaterials={selectedMaterials}  setSelectedMaterials={setSelectedMaterials} />,'valider')}>Sélectionner le Matériel</button>
+            <button onClick={()=>showNotification(<Previsualisation data={captureRef()} />)}>Prévisualiser</button>*/}
+            <button onClick={() =>{
+                CreateInterventionBack()
+                console.log('====================================');
+                console.log(captureRef());
+                console.log('====================================');
+                setTimeout(() => {
+                    Navigate('/interventions')
+                }, 500);
+            }}>Créer l'Intervention</button>
           
         </div>
     );
