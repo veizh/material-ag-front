@@ -33,7 +33,7 @@ const ClosingInterventionComponent = ({ data, toggle }) => {
         console.log(endingDate.current.value);
         console.log(data);
         console.log('====================================');
-        fetch('http://localhost:3500/interventions/getAllTransfer/' + data._id, {
+        fetch('https://back-material-ag.vercel.app/interventions/getAllTransfer/' + data._id, {
             method: "PUT",
             headers: {
                 "Accept": "*/*",
@@ -47,31 +47,9 @@ const ClosingInterventionComponent = ({ data, toggle }) => {
         showNotification("Veuillez patienter quelques instants ....")
         setTimeout(() => {
             Navigate("/InterventionsEnd")
-        }, 5000);
+        }, 3500);
 
-        // const updated = {
-        //     ...data,
-        //     endingDate: endingDate.current.value,
-        //     state: "Terminé",
-        //     materialsReturned: materialsReturned
-        // };
-        // fetch("https://back-material-ag.vercel.app/interventions/updateIntervention/" + data._id, {
-        //     method: "PUT",
-        //     headers: {
-        //         "Accept": "*/*",
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify(updated)
-        // })
-        // .then(res => res.json())
-        // .then(res => {
-        //     if (res.status === 400 || res.status === 500) {
-        //         showNotification("Il y a un problème");
-        //     } else {
-        //         showNotification("Clôture réussie !");
-        //     }
-        //     toggle();
-        // });
+       
     };
 
     return (
