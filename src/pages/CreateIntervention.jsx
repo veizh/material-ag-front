@@ -101,9 +101,9 @@ useEffect(()=>{
             .then(res => {
                 if (!res.err) {
                     showNotification(res.msg)
-                   // setTimeout(() => {
-                   //     Navigate("/interventions")
-                   // }, 1500)
+                    setTimeout(() => {
+                        Navigate("/interventions")
+                    }, 500)
                 }else{
                     showNotification("Il y a eu une erreure lors de la création de l'intervention. Veuillez réessayer")
                 }
@@ -157,9 +157,7 @@ useEffect(()=>{
                 console.log('====================================');
                 console.log(captureRef());
                 console.log('====================================');
-                setTimeout(() => {
-                    Navigate('/interventions')
-                }, 500);
+                
             }}>Créer l'Intervention</button>
           
         </div>

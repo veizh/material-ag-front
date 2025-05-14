@@ -129,7 +129,10 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
                         />
                         <div className="modal-buttons">
                             <button onClick={() => setSelectedMaterial(null)}>Annuler</button>
-                            <button onClick={() => updateIntervention()} disabled={quantity < 0}>
+                            <button onClick={() => {
+                                updateIntervention()
+                          
+                                }} disabled={quantity < 1}>
                                 Confirmer
                             </button>
                         </div>

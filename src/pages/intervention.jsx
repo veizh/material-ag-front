@@ -206,6 +206,9 @@ const ModalConfirm = (props) => {
                     }else{
 
                         showNotification("Le transfert à été effectué","Ok")
+                              setTimeout(() => {
+            window.location.reload()
+        }, 1200);
                     }
                 }
                 )
