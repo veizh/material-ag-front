@@ -1,5 +1,5 @@
 import { KeySquare,User } from 'lucide-react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { server } from '../utils/server';
 import { useNotification } from "../utils/notificationContext.jsx"
@@ -9,10 +9,13 @@ const LoginPage = (props) => {
     const nameRef = useRef()
     const passwordRef = useRef()
         const { showNotification } = useNotification();
-    
+     useEffect(()=>{
+            window.localStorage.removeItem('JWT')
+            window.localStorage.removeItem('user')
+        },[])
     function logIn(data){
         console.log(data);
-        
+       
         fetch(server+'usersTracking/login',{
             method:"POST",
             headers: {

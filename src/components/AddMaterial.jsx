@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNotification } from "../utils/notificationContext";
 
 
-const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }) => {
+const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials,onClose }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedMaterial, setSelectedMaterial] = useState(null);
     const { showNotification,hideNotification } = useNotification();
@@ -90,16 +90,19 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
                       
                   });
     }
-    return (<div>
+    return (<div className="background__dialog visible">
+            <div className="dialog__notification visible">
+                <div className="dialog__content">
+                    <div className="addMat">
+
            <div className="input__container">
                 <input
                     type="text"
                     placeholder="Rechercher un matériel..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                />
+                    />
             </div>
-        <div className="material-list">
          
 
             <div className="material-items">
@@ -112,8 +115,8 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
                 ) : (
                     <p>Aucun matériel trouvé.</p>
                 )}
-            </div>
-
+                </div>
+            <button className="exit" onClick={()=>onClose()}>Quitter</button>
             {/* Modal de sélection de quantité */}
             {selectedMaterial && (
                 <div className="modal-quantity">
@@ -131,7 +134,7 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
                             <button onClick={() => setSelectedMaterial(null)}>Annuler</button>
                             <button onClick={() => {
                                 updateIntervention()
-                          
+                                
                                 }} disabled={quantity < 1}>
                                 Confirmer
                             </button>
@@ -141,6 +144,7 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials }
             )}
         </div>
     </div>
+    </div></div>
     );
 };
 export default AddMaterial

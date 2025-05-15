@@ -22,8 +22,9 @@
   display: flex;
   font-weight: 500;
   align-items: center;
+  border-radius: 13px;
   justify-content: space-between;
-  font-size: 30px;
+  font-size: 26px;
   margin-bottom: 20px;
 }
 .home__container button .icon {

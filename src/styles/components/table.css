@@ -10,7 +10,6 @@
 }
 
 .table__header {
-  height: 8%;
   width: 100%;
   background-color: rgb(255, 255, 255);
   font-size: 32px;
@@ -21,15 +20,20 @@
 }
 .table__header input {
   margin-right: 20px;
-  width: 300px;
+  width: 40%;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
   outline: none;
   border: 2px solid rgb(148, 148, 148);
-  padding: 5px 10px;
+  padding: 3px 10px;
   border-radius: 1px;
-  font-size: 25px;
+  font-size: 18px;
 }
 .table__header h1 {
-  padding: 10px 0;
+  padding: 20px 0;
+  width: -moz-min-content;
+  width: min-content;
+  font-size: 24px;
 }
 .table__header h1::first-letter {
   text-transform: capitalize;
@@ -37,9 +41,9 @@
 }
 
 .table__body {
-  width: calc(100% - 60px);
+  width: calc(100% - 20px);
   margin: 30px;
-  max-height: calc(91% - 45px);
+  max-height: calc(91% - 20px);
   background-color: rgba(245, 245, 245, 0.74);
   border-collapse: collapse;
   border-radius: 15px;
@@ -99,6 +103,7 @@
 .table__body th {
   padding: 10px 20px;
   text-align: start;
+  font-size: 18px;
 }
 .table__body th::first-letter {
   text-transform: capitalize;
@@ -113,6 +118,7 @@
   word-break: normal;
   text-overflow: ellipsis;
   overflow: hidden;
+  font-size: 18px;
 }
 .table__body tbody tr {
   cursor: pointer;
@@ -125,6 +131,6 @@
   position: sticky;
   top: 0;
   left: 0;
-  font-size: 25px;
+  font-size: 22px;
   color: #121212;
 }/*# sourceMappingURL=table.css.map */

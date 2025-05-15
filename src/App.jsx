@@ -38,7 +38,7 @@ function App() {
         .then(res=>res.json())
         .then(res=>{
             window.localStorage.removeItem('user')
-        window.localStorage.setItem("user",JSON.stringify(res))
+            window.localStorage.setItem("user",JSON.stringify(res))
 
             }
         )

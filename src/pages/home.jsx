@@ -229,7 +229,7 @@ useEffect(()=>{
                 </table>
                 
             </div>
-        {role==="admin"&&<button onClick={()=>Navigate("/createIntervention")}>NOUVELLE INTERVENTION<CirclePlus className="icon" size={40} /></button>}
+        {role==="admin" &&<button onClick={()=>Navigate("/createIntervention")}>NOUVELLE INTERVENTION<CirclePlus className="icon" size={40} /></button>}
 
         </main>
 </div>

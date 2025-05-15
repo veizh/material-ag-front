@@ -15,6 +15,7 @@ const InterventionPage = (props)=>{
     const [availableMaterials, setAvailableMaterials] = useState([]);
     const [selectedMaterials, setSelectedMaterials] = useState([]);
     const [allSites,setAllSites] = useState()
+    const [showAddMaterialModal, setShowAddMaterialModal] = useState(false);
     const { id } = useParams();
     const { showNotification } = useNotification();
       let [role,setRole]=useState("remploye")
@@ -109,22 +110,22 @@ const InterventionPage = (props)=>{
                 <div className="materials">
                     {data && data.materials.map((e,i)=>{
                         if(e.quantity===null || e.quantity ===0) return
-                        return(<div key={i} className="row__material"><p>{e.name}</p><div className="separation"></div><p>{e.quantity}</p></div>)
+                        return(<div key={i} className="row__material"><p className="nametxt">{e.name}</p><div className="separation"></div><p className="qty">{e.quantity}</p></div>)
                     })}
                 </div>
             </div>
 
+               {data&&data.state==="En cours"&&
             <div className="buttons__container">
-               {
-                data&&data.state==="En cours"&&
+                
                 <><div onClick={()=>{
                     showNotification(<ModalConfirm site={data} AllCurrentSite={allSites} allMaterial={data && data.materials} />,"Annuler")
                 }}className="btn transfer">Transferer du matériel</div>
-                <div onClick={()=>showNotification(<AddMaterial dataInter={data} list={availableMaterials} selectedMaterials={selectedMaterials} setSelectedMaterials={()=>setSelectedMaterials}/>,"Quitter")} className="btn add">Ajouter du matériel</div>
-               
-                {role==="admin"&&<div onClick={()=>toggleClosingModal()} className="btn end">Cloturer le site</div>}</>}
+                <div onClick={()=>setShowAddMaterialModal(true)} className="btn add">Ajouter du matériel</div>
+                {showAddMaterialModal && <AddMaterial dataInter={data} list={availableMaterials}selectedMaterials={selectedMaterials}setSelectedMaterials={setSelectedMaterials}onClose={() => setShowAddMaterialModal(false)}/>}
+                {role==="admin"&&<div onClick={()=>toggleClosingModal()} className="btn end">Cloturer le site</div>}</>
                 
-            </div>
+            </div>}
         </div>
     )
 }
@@ -161,15 +162,17 @@ const ModalConfirm = (props) => {
     const removeMaterial = (index) => {
         setMaterialsSelected((prev) => prev.filter((_, i) => i !== index));
     };
-    const handleOpen = (options,labelKey,fct) => {
-        showSelect({
-            options: options,
-            labelKey: labelKey,
-            onSelect: (obj) => {
+    const handleOpen = (options,labelKey,fct,excluded) => {
+showSelect({
+    options: options,
+    onSelect: (obj) => {
                 fct(obj)
                 console.log("Objet sélectionné :", obj);
-            }
-        });
+            },
+    labelKey: labelKey,
+    excluded: excluded?excluded:[] // tableau d’objets avec _id
+});
+       
     };
     // Fonction pour confirmer le transfert du matériel
     const handleTransfer = async () => {
@@ -226,25 +229,28 @@ const ModalConfirm = (props) => {
 
        
             <div className="selectBtn" onClick={()=>handleOpen(data,"placeholder",setValues)} >{values?values.clientName+ " " + values.location:"Selectionnez un site" }</div>
-            <div className="selectBtn" onClick={()=>handleOpen(props.allMaterial,"name",pushtoselecteMaterials)} >Selectionnez le matériel </div>
+            <div className="selectBtn mgb" onClick={()=>handleOpen(props.allMaterial,"name",pushtoselecteMaterials,materialsSelected)} >Selectionnez le matériel </div>
+            <div className="material-items">
+
             {materialsSelected.map((e, i) => (
                 <MaterialRow 
-                    key={i} 
-                    product={e.name} 
-                    quantity={e.quantity} 
-                    onRemove={() => removeMaterial(i)} 
-                    onChangeQuantity={(x)=>{
-                        const newMaterials = [...materialsSelected];
-                        newMaterials[i] = {
-                            ...newMaterials[i],
-                            quantity: x.target.value
-                        };
-                        setMaterialsSelected(newMaterials);
-                        
-                        }
-                    }
-                />
-            ))}
+                key={i} 
+                product={e.name} 
+                quantity={e.quantity} 
+                onRemove={() => removeMaterial(i)} 
+                onChangeQuantity={(x)=>{
+                    const newMaterials = [...materialsSelected];
+                    newMaterials[i] = {
+                        ...newMaterials[i],
+                        quantity: x.target.value
+                    };
+                    setMaterialsSelected(newMaterials);
+                    
+                }
+            }
+            />
+        ))}
+        </div>
 
             <button  onClick={()=>{
                     if(!values){
@@ -277,54 +283,4 @@ const MaterialRow = ({ product, quantity, onRemove,onChangeQuantity }) => {
     );
 };
 
-const fakeData = [
-    {
-        clientName: "Société Alpha",
-        siteLocation: "Paris, France",
-        startingDate: "2024-05-12",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ah ahahaaaa aaaaaaaaa aaaaaaaaaaaaaaa"
-    },
-    {
-        clientName: "Entreprise Beta",
-        siteLocation: "Lyon, France",
-        startingDate: "2024-03-28",
-        state: "Terminé",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Groupe Gamma",
-        siteLocation: "Marseille, France",
-        startingDate: "2024-07-10",
-        state: "Planifié",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Société Delta",
-        siteLocation: "Toulouse, France",
-        startingDate: "2023-11-15",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Entreprise Epsilon",
-        siteLocation: "Bordeaux, France",
-        startingDate: "2024-01-05",
-        state: "En cours",
-        test:"hehehe",
-        test2:"ahahah"
-    },
-    {
-        clientName: "Groupe Zeta",
-        siteLocation: "Nice, France",
-        startingDate: "2024-06-20",
-        state: "Annulé",
-        test:"hehehe",
-        test2:"ahahah"
-    }
-];
 export default InterventionPage

@@ -148,8 +148,9 @@ useEffect(()=>{
             <InputComp ref={location} label="Adresse" name="location" type="text" />
             <InputComp ref={codePostal} label="Code postale" name="codePostal" type="text" />
             <InputComp ref={ville} label="Ville" name="ville" type="text" />
-            <InputComp ref={contractNumber} label="Numéro de devis" name="contractNumber" type="text" />
-            <InputComp ref={startingDate} label="Date de Début" name="startingDate" type="date" />
+            <InputComp ref={contractNumber} label="Numéro de devis" name="contractNumber" type="number" />
+            <InputComp ref={startingDate} label="Date de Début" place name="startingDate" type="date" />
+            
            {/* <button onClick={() => showNotification(<SelectMaterials list={availableMaterials} selectedMaterials={selectedMaterials}  setSelectedMaterials={setSelectedMaterials} />,'valider')}>Sélectionner le Matériel</button>
             <button onClick={()=>showNotification(<Previsualisation data={captureRef()} />)}>Prévisualiser</button>*/}
             <button onClick={() =>{
