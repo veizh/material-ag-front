@@ -44,7 +44,7 @@ const CreateInterventionPage = () => {
                 let table = []
                 res?.map(e=>{
                     let tmp =e
-                    tmp.placeholder =e.groupName+" - " + e.clientName+" - "+ e.ville+" - " + e.codePostal +" - " + e.location
+                    tmp.placeholder =e.groupName+" - " + e.clientName
                     table.push(tmp)
                 })
                 setAllClient(table)

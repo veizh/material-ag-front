@@ -24,7 +24,7 @@ const NavComponent =()=>{
         <div className={state?'nav__list active':'nav__list'}>
         {role==="admin"&&<NavLink onClick={()=>setState(false)} to="/accountManagement">compte</NavLink>}
         {role==="admin"&&<NavLink onClick={()=>setState(false)} to="/InterventionsEnd">Interventions Terminées</NavLink>}
-        <NavLink onClick={()=>setState(false)} to="/Interventions">Interventions</NavLink>
+        <NavLink onClick={()=>setState(false)} to="/Interventions">Interventions En Cours</NavLink>
         <NavLink onClick={()=>setState(false)} to="/TransfersList">Liste des transferts</NavLink>
         <NavLink onClick={()=>disconnect()} to="/">Se déconnecter</NavLink>
         </div>

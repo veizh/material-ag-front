@@ -7,16 +7,19 @@ const MaterialSelector = ({ initialMaterials = [], showSiteSelector = false, sit
     const [selectedSite, setSelectedSite] = useState(null);
     const { showSelect } = useSelect();
     const { showNotification } = useNotification();
+    
+  const openMaterialSelector = () => {
+    const selectedIds = new Set(materialsSelected.map(m => m.ref)); // ou un autre identifiant unique comme m.name si pas d'id
+    const filteredOptions = initialMaterials.filter(mat => !selectedIds.has(mat.ref)); // filtre les matériaux déjà sélectionnés
 
-    const openMaterialSelector = () => {
-        showSelect({
-            options: initialMaterials,
-            labelKey: "name",
-            onSelect: (mat) => {
-                setMaterialsSelected(prev => [...prev, ...(Array.isArray(mat) ? mat : [mat])]);
-            }
-        });
-    };
+    showSelect({
+        options: filteredOptions,
+        labelKey: "name",
+        onSelect: (mat) => {
+            setMaterialsSelected(prev => [...prev, ...(Array.isArray(mat) ? mat : [mat])]);
+        }
+    });
+};
 
     const openSiteSelector = () => {
         showSelect({

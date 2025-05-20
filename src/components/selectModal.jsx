@@ -69,7 +69,7 @@ const SelectModal = () => {
                                     }}
                                     key={option._id || originalIndex}
                                 >
-                                    {option[selectLabelKey]}
+                                    {option[selectLabelKey]}{option.quantity?<b style={{color:"green"}}>{" - "+option.quantity}</b>:""}
                                 </div>
                             );
                         })}

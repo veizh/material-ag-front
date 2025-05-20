@@ -40,6 +40,17 @@ section.content {
   align-items: center;
 }
 
+.roleBtn__container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.roleBtn {
+  width: -moz-fit-content !important;
+  width: fit-content !important;
+}
+
 .background__dialog {
   display: none;
 }
@@ -77,6 +88,10 @@ section.content {
   justify-content: space-between;
 }
 
+.closedinter {
+  margin-top: 0px !important;
+}
+
 .closingDate {
   width: 250px !important;
   justify-self: center;
@@ -84,6 +99,12 @@ section.content {
 
 .mgb {
   margin-bottom: 15px;
+}
+
+.selectgroup {
+  font-size: 17px !important;
+  padding: 3px 8px !important;
+  margin: 10px !important;
 }
 
 .dialog__notification {

@@ -120,7 +120,11 @@ const AccountManagementPage = () => {
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="MotdePasse"
               />
-              <button className={newRole?"selected":"notselected"} onClick={()=>{setNewRole(!newRole)}}>ADMIN</button>
+              <div className="roleBtn__container">
+
+              <button className={newRole?"roleBtn selected":"roleBtn notselected"} onClick={()=>{setNewRole(!newRole)}}>ADMIN</button>
+              <button className={newRole?"roleBtn notselected":"roleBtn selected"} onClick={()=>{setNewRole(!newRole)}}>EMPLOYE</button>
+              </div>
             </div>
             <button onClick={() => setShowCreateModal(false)}>Annuler</button>
             <button onClick={addNewAcc}>Créer</button>

@@ -21,8 +21,8 @@
 .nav__icon.background__nav.active {
   transform: scale(55);
   background-color: rgba(245, 245, 245, 0.3);
-  -webkit-backdrop-filter: blur(0.2px);
-          backdrop-filter: blur(0.2px);
+  -webkit-backdrop-filter: brightness(0.6) blur(0.2px);
+          backdrop-filter: brightness(0.6) blur(0.2px);
 }
 .nav__icon svg {
   color: #0a0a0a;
@@ -60,7 +60,7 @@
   border-top: 3px solid #1d1d1d;
 }
 .nav__list a.active {
-  color: #eb6c0b;
+  color: #ff9442;
 }
 .nav__list a:nth-child(1) {
   border: none;

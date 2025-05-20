@@ -20,7 +20,7 @@
         &.active{
             transform: scale(55);
             background-color: rgba(245, 245, 245, 0.3);
-            backdrop-filter: blur(0.2px) ;
+            backdrop-filter: brightness(0.6) blur(0.2px) ;
         }
     }
     svg{
@@ -58,7 +58,7 @@
         font-size: 37px;
         border-top: 3px solid #1d1d1d;
         &.active{
-            color: #eb6c0b;
+            color: #ff9442;
         }
         &:nth-child(1){
             border: none;
