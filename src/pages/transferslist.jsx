@@ -18,7 +18,7 @@ const TransfersList =()=>{
             const isConfirmed = await askConfirmation(`Êtes-vous sûr de vouloir supprimer définitivement ce ticket de transfert ?`)
             if(!isConfirmed) return
           console.log(e)
-          fetch("http://localhost:3500/transfers/deleteOne/"+e._id,{
+          fetch("https://back-material-ag.vercel.app/transfers/deleteOne/"+e._id,{
       headers: {
         Accept: "*/*",
         "Content-Type": "application/json"
