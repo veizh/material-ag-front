@@ -5,6 +5,8 @@ const NewClientPage = (props) => {
     let groupName = useRef()
     let nameClient = useRef()
     let location = useRef()
+    let codePostal = useRef()
+    let ville = useRef()
     let inputs = [
         {
             label:"Groupe",   
@@ -26,6 +28,18 @@ const NewClientPage = (props) => {
             name: "location",
             type: "text",
             ref: location
+
+        }, {
+            label:"Code Postal",
+            name: "codePostal",
+            type: "number",
+            ref: codePostal
+
+        }, {
+            label:"Ville",
+            name: "ville",
+            type: "text",
+            ref: ville
 
         }
     ]
@@ -53,6 +67,8 @@ const NewClientPage = (props) => {
             groupName:groupName.current.value.toLocaleUpperCase(),
             clientName:nameClient.current.value.toLocaleUpperCase(),
             location:location.current.value,
+            codePostal:codePostal.current.value,
+            ville:ville.current.value,
         }
         console.log('====================================');
         console.log("objet envoyé au back:",formObject);

@@ -146,7 +146,7 @@ useEffect(()=>{
            <InputComp ref={groupName}  label="Groupe" name="groupName" type="text" />
             <InputComp ref={clientName} label="Nom du Client" name="clientName" type="text" />
             <InputComp ref={location} label="Adresse" name="location" type="text" />
-            <InputComp ref={codePostal} label="Code postale" name="codePostal" type="text" />
+            <InputComp ref={codePostal} label="Code postale" name="codePostal" type="number" />
             <InputComp ref={ville} label="Ville" name="ville" type="text" />
             <InputComp ref={contractNumber} label="Numéro de devis" name="contractNumber" type="number" />
             <InputComp ref={startingDate} label="Date de Début" place name="startingDate" type="date" />

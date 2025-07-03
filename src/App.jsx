@@ -61,6 +61,7 @@ function App() {
                             <Route path="/interventions" element={<HomePage />} />
                             <Route path="/interventionsEnd" element={<ClosedInterventions />} />
                             <Route path="/createintervention" element={<CreateInterventionPage />} />
+                            <Route path="/NewClientPage" element={<NewClientPage />} />
                             <Route path="/intervention/:id" element={<InterventionPage />} />
                             <Route path="/TransfersList" element={<TransfersList />} />
                             <Route path="/TransferTicket/:id" element={<TransferTicket />} />

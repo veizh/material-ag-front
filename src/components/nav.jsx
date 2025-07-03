@@ -26,6 +26,7 @@ const NavComponent =()=>{
         {role==="admin"&&<NavLink onClick={()=>setState(false)} to="/InterventionsEnd">Interventions Terminées</NavLink>}
         <NavLink onClick={()=>setState(false)} to="/Interventions">Interventions En Cours</NavLink>
         <NavLink onClick={()=>setState(false)} to="/TransfersList">Liste des transferts</NavLink>
+        <NavLink onClick={()=>setState(false)} to="/NewClientPage">Ajout Client</NavLink>
         <NavLink onClick={()=>disconnect()} to="/">Se déconnecter</NavLink>
         </div>
         </>
