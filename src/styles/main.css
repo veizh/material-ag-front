@@ -88,6 +88,14 @@ section.content {
   justify-content: space-between;
 }
 
+.delete:hover > svg {
+  stroke: red;
+}
+
+.delete svg {
+  transition: 0.3s all;
+}
+
 .closedinter {
   margin-top: 0px !important;
 }

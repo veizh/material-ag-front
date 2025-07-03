@@ -15,9 +15,21 @@ const MaterialSelector = ({ initialMaterials = [], showSiteSelector = false, sit
     showSelect({
         options: filteredOptions,
         labelKey: "name",
-        onSelect: (mat) => {
-            setMaterialsSelected(prev => [...prev, ...(Array.isArray(mat) ? mat : [mat])]);
-        }
+       onSelect: (mat) => {
+    const toAdd = Array.isArray(mat) ? mat : [mat];
+    // Ajoute quantity par défaut
+    const withQuantity = toAdd.map(m => ({
+        ...m,
+        quantity: m.quantity ?? 0, // ajuste selon tes données initiales
+        broken: false // optionnel : si tu veux initialiser aussi `broken`
+    }));
+    setMaterialsSelected(prev => {
+    const updated = [...prev, ...withQuantity];
+    onConfirm(updated, selectedSite);
+    return updated;
+});
+}
+        
     });
 };
 

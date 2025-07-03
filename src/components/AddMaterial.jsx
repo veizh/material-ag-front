@@ -39,7 +39,8 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials,o
         let item = {
             name: selectedMaterial.name,
             ref: selectedMaterial.ref,
-            quantity: quantity
+            quantity: quantity,
+            _id:selectedMaterial._id
         }   
         let tmp = dataInter
             console.log('====================================');
@@ -61,7 +62,7 @@ const AddMaterial = ({ dataInter,list, setSelectedMaterials, selectedMaterials,o
             console.log('====================================');
             console.log('====================================');
             console.log("interdata material after push:",dataInter);
-            fetch("https://stock-ag-back.vercel.app/products/addProductAndHandleAlert/" + item.ref, {
+            fetch("https://stock-ag-back.vercel.app/products/addProductAndHandleAlert/" + item._id, {
       method: "PUT",
       headers: {
         Accept: "*/*",

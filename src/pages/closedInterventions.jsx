@@ -3,8 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { server } from "../utils/server";
 import { CirclePlus } from 'lucide-react';
 import { useSelect } from "../utils/selectContext";
+import { Trash2 } from "lucide-react";
+
+import useConfirmation from "../utils/useConfirmation.js"; 
 
 const ClosedInterventions =()=>{
+    const { modal, askConfirmation } = useConfirmation(); // Utilisation du hook de confirmation
     const Navigate = useNavigate()
     const [loading,setLoading] = useState(false)
     const [selectedGroup,setSelectedGroup] = useState()
@@ -15,6 +19,39 @@ const ClosedInterventions =()=>{
     const [filterGroup,setFilterGroup]=useState()
     const { showSelect } = useSelect();
 
+     const deleteInter= async (e) =>{
+            const isConfirmed = await askConfirmation(`Êtes-vous sûr de vouloir supprimer définitivement cette itnervention ?`)
+            if(!isConfirmed) return
+          console.log(e)
+          fetch("http://localhost:3500/interventions/deleteOne/"+e._id,{
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json"
+      },
+      method: "delete"
+  })  .then((res) => res.json())
+  .then((res) => {
+      console.log('====================================');
+      console.log(res);
+      console.log('====================================');
+     window.location.reload()
+  });
+            
+        }
+function tableLine(data,i,Navigate){
+    
+    return(
+        <tr key={i} >
+            <td onClick={()=>Navigate("/intervention/"+data._id)} className="nowrap"><b>{data.contractNumber?data.contractNumber:"N/R"}</b></td>
+            <td onClick={()=>Navigate("/intervention/"+data._id)} className="bold groupName">{data.groupName}</td>
+            <td onClick={()=>Navigate("/intervention/"+data._id)} className="clientName">{data.clientName}</td>
+            <td onClick={()=>Navigate("/intervention/"+data._id)} className="nowrap">{data.startingDate?data.startingDate:"Non Renseigné"}</td>
+            <td onClick={()=>Navigate("/intervention/"+data._id)} className="nowrap">{data.endingDate?data.endingDate:"Non Renseigné"}</td>
+            <td className="nowrap delete" onClick={()=>deleteInter(data)}><Trash2 /></td>
+
+        </tr>
+    )
+}
     useEffect(()=>{
         fetch("https://back-material-ag.vercel.app/clients/getAllClients",{
             headers: {
@@ -122,7 +159,8 @@ useEffect(()=>{
     });
     setLoading(false)
 },[])
-    return(
+    return(<>
+        {modal}
         <div className="home__container">
         <main className="table">
             <div className="table__header">
@@ -141,12 +179,13 @@ useEffect(()=>{
                             <th className="nowrap">Client</th>
                             <th className="nowrap">Date de départ</th>
                             <th className="nowrap">Date de Cloture</th>
+                            <th className="nowrap"></th>
                         </tr>
                     </thead>
                     <tbody>
                       {(searchTerm && searchTerm.length > 1 ? sortedInter : filterGroup ? sortedInter : allInter)?.map((e, i) => {
-    return e.state === "Terminé" && tableLine(e, i, Navigate);
-})}
+                          return e.state === "Terminé" && tableLine(e, i, Navigate);
+                        })}
                     </tbody>
                 </table>
                 
@@ -154,21 +193,9 @@ useEffect(()=>{
 
         </main>
 </div>
+                        </>
     )
 }
 
 export default ClosedInterventions
 
-function tableLine(data,i,Navigate){
-    
-    return(
-        <tr key={i} onClick={()=>Navigate("/intervention/"+data._id)}>
-            <td className="nowrap"><b>{data.contractNumber?data.contractNumber:"N/R"}</b></td>
-            <td className="bold groupName">{data.groupName}</td>
-            <td className="clientName">{data.clientName}</td>
-            <td className="nowrap">{data.startingDate?data.startingDate:"Non Renseigné"}</td>
-            <td className="nowrap">{data.endingDate?data.endingDate:"Non Renseigné"}</td>
-
-        </tr>
-    )
-}
