@@ -77,7 +77,7 @@ useEffect(()=>{
         if(!intervention.startingDate || !intervention.clientName || !intervention.contractNumber  ||  !intervention.location||  !intervention.codePostal||  !intervention.ville){
             return showNotification('Veuillez remplir tout les champs !',"ok")
         }
-        fetch('https://back-material-ag.vercel.app//interventions/create', {
+        fetch('https://back-material-ag.vercel.app/interventions/create', {
             method: "POST",
             headers: {
                 "Accept": "*/*",
