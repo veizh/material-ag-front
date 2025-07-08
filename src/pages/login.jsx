@@ -28,7 +28,10 @@ const LoginPage = (props) => {
         .then((res) => {
           if (res.token) {
             localStorage.setItem("JWT", res.token);
-            Navigate("/interventions");
+            setTimeout(() => {
+                
+                Navigate("/interventions");
+            }, 300);
           }
           if(res.err){
             showNotification(res.err)
