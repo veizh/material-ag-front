@@ -1,7 +1,8 @@
 import { useRef } from "react"
 import InputComp from "../components/inputComponent"
+import { useNavigate } from "react-router-dom"
 const NewClientPage = (props) => {
-    
+    let Navigate = useNavigate()
     let groupName = useRef()
     let nameClient = useRef()
     let location = useRef()
@@ -56,10 +57,7 @@ const NewClientPage = (props) => {
             })
             .then((res) => res.json())
             .then((res) => {
-              if(res.err){
-
-    
-              }
+             Navigate("interventions")
             });
         }
     function captureRef() {

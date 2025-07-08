@@ -73,29 +73,17 @@ useEffect(()=>{
 
 
     function CreateInterventionBack() {
-        let data = captureRef();
-        if(!data.startingDate || !data.clientName || !data.contractNumber  ||  !data.location||  !data.codePostal||  !data.ville){
+        let intervention = captureRef();
+        if(!intervention.startingDate || !intervention.clientName || !intervention.contractNumber  ||  !intervention.location||  !intervention.codePostal||  !intervention.ville){
             return showNotification('Veuillez remplir tout les champs !',"ok")
         }
-        let clientData = {
-            clientName: clientName.current.value.toLowerCase(),
-            groupName: groupName.current.value.toLowerCase(),
-            location: location.current.value.toLowerCase(),
-            codePostal: codePostal.current.value.toLowerCase(),
-            ville: ville.current.value.toLowerCase(),
-        };
-        console.log(clientData);
-        let tmp = {
-            clientData:clientData,
-            intervention:data
-        }
-        fetch('https://back-material-ag.vercel.app/interventions/create', {
+        fetch('http://localhost:3500/interventions/create', {
             method: "POST",
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(tmp)
+            body: JSON.stringify(intervention)
         })
             .then(res => res.json())
             .then(res => {
